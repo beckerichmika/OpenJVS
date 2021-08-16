@@ -9,7 +9,7 @@ project(openjvs
 
 find_package(Threads REQUIRED)
 
-include_directories(${THREAD_INLCUDE_DIRS} ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR})
+include_directories(${THREAD_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR})
 
 FILE(GLOB_RECURSE Sources src/*.c) #Assume we want to include everything from src/
 
