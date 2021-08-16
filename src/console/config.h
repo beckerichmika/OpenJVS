@@ -17,6 +17,9 @@
 #define DEFAULT_SENSE_LINE_TYPE 0
 #define DEFAULT_AUTO_CONTROLLER_DETECTION 1
 
+// Only works with the current user!
+#define USER_DEVICE_MAPPING_PATH "~/.config/openjvs/devices/"
+
 #define MAX_PATH_LENGTH 1024
 #define MAX_LINE_LENGTH 1024
 
