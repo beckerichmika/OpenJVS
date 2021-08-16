@@ -294,6 +294,10 @@ JVSCLIStatus parseArguments(int argc, char **argv, char *map)
         initDebug(1);
         return JVS_CLI_STATUS_SUCCESS_CONTINUE;
     }
+    else if (strcmp(argv[1], "--edit-controller") == 0)
+    {
+        return editController(argc < 3 ? 0 : argv[2]);
+    }
 
     // If none of these where found, the argument is unknown.
     debug(0, "Unknown argument %s\n", argv[1]);
