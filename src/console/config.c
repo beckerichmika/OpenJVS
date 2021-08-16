@@ -100,7 +100,7 @@ JVSConfigStatus parseInputMapping(char *path, InputMappings *inputMappings)
     char *saveptr = NULL;
 
     char gamePath[MAX_PATH_LENGTH];
-    strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
+    strcpy(gamePath, getUserConfigDir("devices"));
     strcat(gamePath, path);
 
     // Check the user path if there are any mappings
