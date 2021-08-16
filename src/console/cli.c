@@ -164,6 +164,84 @@ JVSCLIStatus disableDevice(char *deviceName)
     return JVS_CLI_STATUS_SUCCESS_CLOSE;
 }
 
+JVSCLIStatus editController(char *controllerPath)
+{
+    struct stat st;
+    char userFile[MAX_PATH_LENGTH];
+    char packageFile[MAX_PATH_LENGTH];
+    char editor[10];
+    FILE *src, *dest;
+
+    // Check if file has already been edited
+    snprintf(userFile, MAX_PATH_LENGTH, "%s%s", getUserConfigDir("devices"), controllerPath);
+    if (stat(userFile, &st) == 0)
+    {
+        debug(0, "File exists in ~/.config/openjvs/devices/\n");
+    }
+    else
+    {
+        snprintf(packageFile, MAX_PATH_LENGTH, "%s%s", DEFAULT_DEVICE_MAPPING_PATH, controllerPath);
+        if (stat(packageFile, &st) == 0)
+        {
+            debug(0, "File exists in /etc/openjvs/devices\n");
+            printf("Copying file from /etc/openjvs to ~/.config/openjvs\n");
+
+            // Copy from /etc/openjvs to ~/.config/openjvs
+            src = fopen(packageFile, "r");
+            if (src == NULL)
+            {
+                debug(0, "Could not open src file\n");
+                return JVS_CLI_STATUS_ERROR;
+            }
+
+            dest = fopen(userFile, "w");
+            if (dest == NULL)
+            {
+                debug(0, "Could not open dest file\n");
+                return JVS_CLI_STATUS_ERROR;
+            }
+
+            char ch = fgetc(src);
+            while (ch != EOF)
+            {
+                fputc(ch, dest);
+                ch = fgetc(src);
+            }
+
+            fclose(src);
+            fclose(dest);
+            printf("Copied file to ~/.config/openjvs/devices/");
+        }
+        else
+        {
+            // Create a new file
+            FILE *newController;
+            newController = fopen(userFile, "w");
+            if (newController != NULL)
+            {
+                printf("Successfully created new controller config!\n");
+            }
+            else
+            {
+                debug(0, "Could not create new controller config, errno: %d", errno);
+                return JVS_CLI_STATUS_ERROR;
+            }
+            fclose(newController);
+        }
+    }
+
+    // Open editor
+    strcpy(editor, getenv("EDITOR"));
+    if (editor == NULL)
+    {
+        strcpy(editor, DEFAULT_EDITOR);
+    }
+
+    char *args[] = {editor, userFile, NULL};
+    execvp(editor, args);
+    return JVS_CLI_STATUS_SUCCESS_CLOSE;
+}
+
 /**
  * Prints the listing of devices
  * 
