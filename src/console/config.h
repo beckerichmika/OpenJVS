@@ -49,4 +49,6 @@ JVSConfigStatus parseOutputMapping(char *path, OutputMappings *outputMappings, c
 JVSConfigStatus parseRotary(char *path, int rotary, char *output);
 JVSConfigStatus parseIO(char *path, JVSCapabilities *capabilities);
 
+char *getUserConfigDir(char *dir);
+
 #endif // CONFIG_H_
