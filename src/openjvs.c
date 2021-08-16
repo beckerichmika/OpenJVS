@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "console/cli.h"
 #include "console/config.h"
@@ -25,6 +26,13 @@ volatile int running = 1;
 int main(int argc, char **argv)
 {
     signal(SIGINT, handleSignal);
+    
+    /* Create user 'devices' mapping path if not exists */
+    struct stat st = {0};
+    if (stat(getUserConfigDir("devices"), &st) == -1)
+    {
+        mkdir(getUserConfigDir("devices"), 0700);
+    }
 
     /* Read the initial config */
     JVSConfig config;
