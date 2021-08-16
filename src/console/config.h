@@ -20,6 +20,9 @@
 // Needs a better name
 #define USER_CONFIG_ROOT ".config/openjvs/"
 
+// This editor will be used if $EDITOR is blank
+#define DEFAULT_EDITOR "vi"
+
 #define MAX_PATH_LENGTH 1024
 #define MAX_LINE_LENGTH 1024
 
