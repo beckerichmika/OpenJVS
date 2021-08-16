@@ -21,12 +21,13 @@ JVSCLIStatus printUsage()
 {
     debug(0, "Usage: openjvs ( options [controller] | [game] )\n\n");
     debug(0, "Options:\n");
-    debug(0, "  --list     Lists all controllers\n");
-    debug(0, "  --enable   Enables a new/all controller(s)\n");
-    debug(0, "  --disable  Disables a new/all controller(s)\n");
-    debug(0, "  --help     Displays this text\n");
-    debug(0, "  --debug    Runs in debug mode\n");
-    debug(0, "  --version  Displays the OpenJVS Version\n");
+    debug(0, "  --list              Lists all controllers\n");
+    debug(0, "  --enable            Enables a new/all controller(s)\n");
+    debug(0, "  --disable           Disables a new/all controller(s)\n");
+    debug(0, "  --edit-controller   Create a copy of an existing controller to ~/.config/openjvs/devices/\n");
+    debug(0, "  --help              Displays this text\n");
+    debug(0, "  --debug             Runs in debug mode\n");
+    debug(0, "  --version           Displays the OpenJVS Version\n");
     return JVS_CLI_STATUS_SUCCESS_CLOSE;
 }
 
