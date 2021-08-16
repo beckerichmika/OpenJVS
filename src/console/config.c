@@ -9,7 +9,7 @@
 char *getUserConfigDir(char *dir)
 {
     char confPath[MAX_PATH_LENGTH];
-    snprintf(confPath, sizeof(confPath), "%s/%s%s", getenv("HOME"), USER_CONFIG_ROOT, dir);
+    snprintf(confPath, sizeof(confPath), "%s/%s%s/", getenv("HOME"), USER_CONFIG_ROOT, dir);
     return confPath;
 }
 
