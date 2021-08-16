@@ -6,6 +6,13 @@
 
 #include "jvs/io.h"
 
+char *getUserConfigDir(char *dir)
+{
+    char confPath[MAX_PATH_LENGTH];
+    snprintf(confPath, sizeof(confPath), "%s/%s%s", getenv("HOME"), USER_CONFIG_ROOT, dir);
+    return confPath;
+}
+
 char *getNextToken(char *buffer, char *seperator, char **saveptr)
 {
     char *token = strtok_r(buffer, seperator, saveptr);
