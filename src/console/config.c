@@ -93,11 +93,22 @@ JVSConfigStatus parseInputMapping(char *path, InputMappings *inputMappings)
     char *saveptr = NULL;
 
     char gamePath[MAX_PATH_LENGTH];
-    strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+    strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
     strcat(gamePath, path);
 
+    // Check the user path if there are any mappings
     if ((file = fopen(gamePath, "r")) == NULL)
-        return JVS_CONFIG_STATUS_FILE_NOT_FOUND;
+    {
+        memset(gamePath, 0, MAX_PATH_LENGTH);
+        strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+        strcat(gamePath, path);
+
+        // Check the default path
+        if ((file = fopen(gamePath, "r")) == NULL)
+        {
+            return JVS_CONFIG_STATUS_FILE_NOT_FOUND;
+        }
+    }
 
     while (fgets(buffer, MAX_LINE_LENGTH, file))
     {
