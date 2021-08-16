@@ -1,6 +1,8 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/dir.h>
 
 #include "console/cli.h"
 
