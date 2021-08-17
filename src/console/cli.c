@@ -173,7 +173,7 @@ JVSCLIStatus editController(char *controllerPath)
     FILE *src, *dest;
 
     // Check if file has already been edited
-    snprintf(userFile, MAX_PATH_LENGTH, "%s%s", getUserConfigDir("devices"), controllerPath);
+    snprintf(userFile, MAX_PATH_LENGTH, "%s%s", USER_DEVICE_MAPPING_PATH, controllerPath);
     if (stat(userFile, &st) == 0)
     {
         debug(0, "File exists in ~/.config/openjvs/devices/\n");
