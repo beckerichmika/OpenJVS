@@ -26,9 +26,13 @@ volatile int running = 1;
 int main(int argc, char **argv)
 {
     signal(SIGINT, handleSignal);
-    
+
     /* Create user 'devices' mapping path if not exists */
     struct stat st = {0};
+    if (stat(getUserConfigDir(""), &st) == -1)
+    {
+        mkdir(getUserConfigDir(""), 0700);
+    }
     if (stat(getUserConfigDir("devices"), &st) == -1)
     {
         mkdir(getUserConfigDir("devices"), 0700);
