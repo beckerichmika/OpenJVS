@@ -57,16 +57,55 @@ JVSCLIStatus printVersion()
  */
 JVSCLIStatus enableDevice(char *deviceName)
 {
+    struct stat st;
     if (!deviceName)
     {
-        DIR *d;
-        struct dirent *dir;
+        DIR *d, *u;
+        struct dirent *dir, *udir;
+
         d = opendir(DEFAULT_DEVICE_MAPPING_PATH);
+        u = opendir(USER_DEVICE_MAPPING_PATH);
+
+        // Enable all user controllers
+        if (u)
+        {
+            while ((udir = readdir(u)) != NULL)
+            {
+                char gamePath[MAX_PATH_LENGTH];
+                strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
+                strcat(gamePath, udir->d_name);
+
+                char gamePathEnabled[MAX_PATH_LENGTH];
+                strcpy(gamePathEnabled, gamePath);
+
+                for (int i = 0; i < MAX_PATH_LENGTH; i++)
+                {
+                    if (gamePathEnabled[i] == '.')
+                    {
+                        gamePathEnabled[i] = 0;
+                        break;
+                    }
+                }
+
+                rename(gamePath, gamePathEnabled);
+            }
+            closedir(u);
+        }
+
+        // Enable all packaged controllers, but only if they are not in the user dir
         if (d)
         {
             while ((dir = readdir(d)) != NULL)
             {
                 char gamePath[MAX_PATH_LENGTH];
+                strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
+                strcat(gamePath, dir->d_name);
+
+                if (stat(gamePath, &st) == 0) {
+                    continue;
+                }
+
+                memset(gamePath, 0, MAX_PATH_LENGTH);
                 strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
                 strcat(gamePath, dir->d_name);
 
@@ -92,8 +131,16 @@ JVSCLIStatus enableDevice(char *deviceName)
     }
 
     char gamePath[MAX_PATH_LENGTH];
-    strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+    strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
     strcat(gamePath, deviceName);
+
+    // If the file is not in the user directory, use the package directory instead
+    if (!stat(gamePath, &st) == 0)
+    {
+        memset(gamePath, 0, MAX_PATH_LENGTH);
+        strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+        strcat(gamePath, deviceName);
+    }
 
     char gamePathDisabled[MAX_PATH_LENGTH];
     strcpy(gamePathDisabled, gamePath);
