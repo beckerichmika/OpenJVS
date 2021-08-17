@@ -29,13 +29,13 @@ int main(int argc, char **argv)
 
     /* Create user 'devices' mapping path if not exists */
     struct stat st = {0};
-    if (stat(getUserConfigDir(""), &st) == -1)
+    if (stat(USER_CONFIG_ROOT, &st) == -1)
     {
-        mkdir(getUserConfigDir(""), 0700);
+        mkdir(USER_CONFIG_ROOT, 0700);
     }
-    if (stat(getUserConfigDir("devices"), &st) == -1)
+    if (stat(USER_DEVICE_MAPPING_PATH, &st) == -1)
     {
-        mkdir(getUserConfigDir("devices"), 0700);
+        mkdir(USER_DEVICE_MAPPING_PATH, 0700);
     }
 
     /* Read the initial config */
