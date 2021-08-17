@@ -9,7 +9,7 @@
 char *getUserConfigDir(char *dir)
 {
     char *confPath = malloc(MAX_PATH_LENGTH);
-    snprintf(confPath, MAX_PATH_LENGTH, "%s/%s%s", getenv("HOME"), USER_CONFIG_ROOT, dir);
+    snprintf(confPath, MAX_PATH_LENGTH, "%s/%s%s", getenv("HOME"), ".config/openjvs/", dir);
     return confPath;
 }
 
