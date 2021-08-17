@@ -18,7 +18,11 @@
 #define DEFAULT_AUTO_CONTROLLER_DETECTION 1
 
 // Needs a better name
-#define USER_CONFIG_ROOT ".config/openjvs/"
+#define USER_CONFIG_ROOT getUserConfigDir("")
+#define USER_DEVICE_MAPPING_PATH getUserConfigDir("devices/")
+#define USER_GAME_MAPPING_PATH getUserConfigDir("games/")
+#define USER_IO_PATH getUserConfigDir("ios/")
+#define USER_ROTARY_PATH getUserConfigDir("rotary")
 
 // This editor will be used if $EDITOR is blank
 #define DEFAULT_EDITOR "vi"
