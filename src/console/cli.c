@@ -168,16 +168,44 @@ JVSCLIStatus enableDevice(char *deviceName)
  */
 JVSCLIStatus disableDevice(char *deviceName)
 {
+    struct stat st;
     if (!deviceName)
     {
         DIR *d;
         struct dirent *dir;
         d = opendir(DEFAULT_DEVICE_MAPPING_PATH);
+        u = opendir(USER_DEVICE_MAPPING_PATH);
+
+        // Enable all user controllers
+        if (u)
+        {
+            while ((udir = readdir(u)) != NULL)
+            {
+                char gamePathEnabled[MAX_PATH_LENGTH];
+                strcpy(gamePathEnabled, DEFAULT_DEVICE_MAPPING_PATH);
+                strcat(gamePathEnabled, dir->d_name);
+
+                char gamePathDisabled[MAX_PATH_LENGTH];
+                strcpy(gamePathDisabled, gamePathEnabled);
+                strcat(gamePathDisabled, ".disabled");
+
+                rename(gamePathEnabled, gamePathDisabled);
+            }
+            closedir(u);
+        }
         if (d)
         {
             while ((dir = readdir(d)) != NULL)
             {
                 char gamePathEnabled[MAX_PATH_LENGTH];
+                strcpy(gamePathEnabled, USER_DEVICE_MAPPING_PATH);
+                strcat(gamePathEnabled, dir->d_name);
+
+                if (stat(gamePathEnabled, &st) == 0) {
+                    continue;
+                }
+
+                memset(gamePathEnabled, 0, MAX_PATH_LENGTH);
                 strcpy(gamePathEnabled, DEFAULT_DEVICE_MAPPING_PATH);
                 strcat(gamePathEnabled, dir->d_name);
 
@@ -195,8 +223,16 @@ JVSCLIStatus disableDevice(char *deviceName)
     }
 
     char gamePath[MAX_PATH_LENGTH];
-    strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+    strcpy(gamePath, USER_DEVICE_MAPPING_PATH);
     strcat(gamePath, deviceName);
+
+    // If the file is not in the user directory, use the package directory instead
+    if (!stat(gamePath, &st) == 0)
+    {
+        memset(gamePath, 0, MAX_PATH_LENGTH);
+        strcpy(gamePath, DEFAULT_DEVICE_MAPPING_PATH);
+        strcat(gamePath, deviceName);
+    }
 
     char gamePathDisabled[MAX_PATH_LENGTH];
     strcpy(gamePathDisabled, gamePath);
