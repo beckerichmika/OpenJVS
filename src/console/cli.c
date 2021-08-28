@@ -171,8 +171,8 @@ JVSCLIStatus disableDevice(char *deviceName)
     struct stat st;
     if (!deviceName)
     {
-        DIR *d;
-        struct dirent *dir;
+        DIR *u, *d;
+        struct dirent *dir, *udir;
         d = opendir(DEFAULT_DEVICE_MAPPING_PATH);
         u = opendir(USER_DEVICE_MAPPING_PATH);
 
@@ -183,7 +183,7 @@ JVSCLIStatus disableDevice(char *deviceName)
             {
                 char gamePathEnabled[MAX_PATH_LENGTH];
                 strcpy(gamePathEnabled, DEFAULT_DEVICE_MAPPING_PATH);
-                strcat(gamePathEnabled, dir->d_name);
+                strcat(gamePathEnabled, udir->d_name);
 
                 char gamePathDisabled[MAX_PATH_LENGTH];
                 strcpy(gamePathDisabled, gamePathEnabled);
